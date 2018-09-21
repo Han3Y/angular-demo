@@ -1,0 +1,20 @@
+<div class="alain-default__content-title">
+  <h1>
+    Page Name<small>Welcome !</small>
+  </h1>
+</div>
+<nz-spin [nzSpinning]="pageRendering" [nzDelay]="500">
+  <div id="canvas-box" style="margin: 0 auto;text-align: center">
+    <nz-button-group *ngIf="pdfDoc">
+      <button nz-button nzType="primary" [disabled]="pageNum <= 1" (click)="onPrevPage()"><i class="anticon anticon-left"></i>上一页</button>
+      <button nz-button nzType="primary" [disabled]="pageNum >= pdfDoc.numPages" (click)="onNextPage()">下一页<i class="anticon anticon-right"></i></button>
+    </nz-button-group>
+    <canvas id="the-canvas"></canvas>
+    <nz-button-group *ngIf="pdfDoc">
+      <button nz-button nzType="primary" [disabled]="pageNum <= 1" (click)="onPrevPage()"><i class="anticon anticon-left"></i>上一页</button>
+      <button nz-button nzType="primary" [disabled]="pageNum >= pdfDoc.numPages" (click)="onNextPage()">下一页<i class="anticon anticon-right"></i></button>
+    </nz-button-group>
+  </div>
+</nz-spin>
+
+

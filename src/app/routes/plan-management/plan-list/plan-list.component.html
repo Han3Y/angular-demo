@@ -1,0 +1,38 @@
+<!--<page-header>-->
+  <!--<ng-template #action>-->
+    <!--<button (click)="add()" nz-button nzType="primary">新建</button>-->
+  <!--</ng-template>-->
+<!--</page-header>-->
+<nz-card [nzBordered]="false">
+  <form nz-form [nzLayout]="'inline'" class="search-form">
+    <nz-form-item>
+      <nz-form-label>名称</nz-form-label>
+      <nz-form-control>
+        <input nz-input [(ngModel)]="s.name" name="name" placeholder="计划名称">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button (click)="st.load(1)" nz-button nzType="primary">搜索</button>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button (click)="s={};st.reset(s)" nz-button nzType="default">重置</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <button nz-button (click)="add()" [nzType]="'primary'">新建</button>
+  <button nz-button (click)="removeList()" [nzType]="'default'" *ngIf="selectedRows.length > 0" >删除</button>
+  <st #st [data]="url" [page]="{frontPagination:false}" [req]="{params:s}" [columns]="columns" (checkboxChange)="checkboxChange($event)"></st>
+</nz-card>
+<ng-template #planConfirm>
+  <div class="executeWindow">
+    <h2>在进行现场工作前，请进行以下事项确认：</h2>
+    <li>请确认执法记录仪处于开启状态。</li>
+    <li>请确认被检查单位已经书面同意使用工具检查。</li>
+    <li>请确认检查对象工作正常。</li>
+    <li>请确认 U 口检查工具的数据存储区经过工具箱管理系统的检测，无任何数据。</li>
+    <li>请确认已经开启屏幕录像程序。</li>
+  </div>
+</ng-template>

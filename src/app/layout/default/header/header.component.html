@@ -1,0 +1,121 @@
+<div class="alain-default__header-logo">
+  <a [routerLink]="['/']">
+    <img class="alain-default__header-logo-expanded" src="./assets/img/head-logo.png" alt="{{settings.app.name}}" style="max-height:40px;" />
+    <span class="header-name" *ngIf="!settings.layout.collapsed">{{settings.app.name}}</span>
+    <img class="alain-default__header-logo-collapsed" src="./assets/img/head-logo.png" alt="{{settings.app.name}}" style="max-height:40px;" />
+  </a>
+</div>
+<div class="alain-default__nav-wrap">
+  <ul class="alain-default__nav">
+    <!-- Menu -->
+    <li>
+      <div class="alain-default__nav-item" (click)="toggleCollapsedSidebar()">
+        <i class="anticon anticon-menu-{{settings.layout.collapsed ? 'unfold' : 'fold'}}"></i>
+      </div>
+    </li>
+    <!-- Github Page -->
+    <!--<li>-->
+      <!--<a class="alain-default__nav-item" href="//github.com/ng-alain/ng-alain" target="_blank">-->
+        <!--<i class="anticon anticon-github"></i>-->
+      <!--</a>-->
+    <!--</li>-->
+    <!-- Lock Page -->
+    <!--<li class="hidden-mobile">-->
+      <!--<div class="alain-default__nav-item" [routerLink]="['/lock']">-->
+        <!--<i class="anticon anticon-lock"></i>-->
+      <!--</div>-->
+    <!--</li>-->
+    <!-- Search Button -->
+    <!--<li class="header-search__btn" (click)="searchToggleChange()">-->
+      <!--<div class="alain-default__nav-item">-->
+        <!--<i class="anticon anticon-search"></i>-->
+      <!--</div>-->
+    <!--</li>-->
+  </ul>
+  <!--<header-search class="alain-default__search" [toggleChange]="searchToggleStatus"></header-search>-->
+  <span class="header-time">{{time | async}}</span>
+  <ul class="alain-default__nav">
+    <!-- Notify -->
+    <li>
+      <header-notify></header-notify>
+    </li>
+    <!-- Task -->
+    <!--<li class="hidden-mobile">-->
+      <!--<header-task></header-task>-->
+    <!--</li>-->
+    <!-- App Icons -->
+    <li class="hidden-mobile">
+      <header-icon></header-icon>
+    </li>
+    <!-- Settings -->
+    <li class="hidden-mobile">
+      <nz-dropdown nzTrigger="click" nzPlacement="bottomRight">
+        <div class="alain-default__nav-item" nz-dropdown>
+          <i class="anticon anticon-setting"></i>
+        </div>
+        <div nz-menu style="width:110px;">
+          <div nz-menu-item>
+            <header-fullscreen></header-fullscreen>
+          </div>
+          <ng-container *ngFor="let oper of headerOperations">
+            <div nz-menu-item (click)="selectOperation(oper.type)">{{oper.name}}</div>
+          </ng-container>
+          <!--<div nz-menu-item>-->
+            <!--<header-storage></header-storage>-->
+          <!--</div>-->
+          <!--<div nz-menu-item>-->
+            <!--<header-i18n></header-i18n>-->
+          <!--</div>-->
+        </div>
+      </nz-dropdown>
+    </li>
+    <li class="hidden-mobile">
+      <header-user></header-user>
+    </li>
+  </ul>
+</div>
+<nz-modal [(nzVisible)]="versionVisible" nzTitle="{{settings.app.name}}" [nzFooter]="null" (nzOnCancel)="versionVisible = false">
+  <div class="version-box">
+    <img class="version-logo" src="./assets/img/version-logo.png">
+    <div *ngFor="let item of settings.app.versionInfo">
+      <div class="version-text">
+        <span class="name-text">{{item.text}}：</span>
+        <span>{{item.value}}</span>
+      </div>
+    </div>
+    <div class="version-footer">
+        {{settings.app.copyRight}}&nbsp;
+        {{settings.app.company}}&nbsp;
+        保留所有权利
+    </div>
+  </div>
+</nz-modal>
+<ng-template #tplUpgradeFooter>
+  <button nz-button nzType="default" (click)="upgradeCancel()" *ngIf="!upgrading">取消</button>
+  <button nz-button nzType="primary" (click)="upgrade()" [disabled]="!uploadSuccess || uploadList.length == 0" [nzLoading]="upgrading">升级</button>
+</ng-template>
+<ng-template #tplUpgradeContent>
+  <div class="upgrade-content">
+    <nz-upload
+      [nzDisabled]="uploadList.length>0"
+      [(nzFileList)]="uploadList"
+      (nzChange)="upgradeChangeStatus($event)"
+      nzAction="https://jsonplaceholder.typicode.com/posts/">
+      <button nz-button>
+        <i class="anticon anticon-upload"></i><span>选择文件</span>
+      </button>
+    </nz-upload>
+  </div>
+</ng-template>
+<ng-template #tplRestoreFooter>
+  <button nz-button nzType="default" (click)="restoreCancel()" *ngIf="!restoring">取消</button>
+  <button nz-button nzType="primary" (click)="restore()" [disabled]="!restorePwd" [nzLoading]="restoring">恢复出厂</button>
+</ng-template>
+<ng-template #tplRestoreContent>
+  <nz-form-item>
+    <nz-form-label nzRequired nzFor="no" nzSpan="7">密码</nz-form-label>
+    <nz-form-control nzSpan="12">
+      <input nz-input required type="password" [(ngModel)]="restorePwd" name="description" id="no">
+    </nz-form-control>
+  </nz-form-item>
+</ng-template>
